@@ -36,6 +36,7 @@ class ArrayADT
         int BinarySearch(int l,int h,const int val);
         int RBinarySearch(int l,int h, const int val);
         int getLength() const;
+        int get(const int index) const;
 };
 
 #endif

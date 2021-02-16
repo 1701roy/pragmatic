@@ -182,4 +182,13 @@ int ArrayADT::getLength() const
     return pimpl->length;
 }
 
+//Time Complexity: O(1)
+int ArrayADT::get(const int index) const
+{
+    if(index >= 0 && index < pimpl->length)
+        return pimpl->p[index];
+
+    return -1;
+}
+
 
