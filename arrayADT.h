@@ -37,6 +37,7 @@ class ArrayADT
         int RBinarySearch(int l,int h, const int val);
         int getLength() const;
         int get(const int index) const;
+        void reverse();
 };
 
 #endif

@@ -26,6 +26,8 @@ int main()
     a.Add(10);
     a.Add(7);
     std::cout<<a.get(1)<<std::endl;
+    a.reverse();
+    a.Display();
 
     return 0;
 }

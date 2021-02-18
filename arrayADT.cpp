@@ -191,4 +191,15 @@ int ArrayADT::get(const int index) const
     return -1;
 }
 
+//Time Complexity: O(n), n is the length of the array
+//Space Complexity: O(1), as we are utilizing the same array
+void ArrayADT::reverse()
+{
+    for(int i=0,j=pimpl->length-1;i<j;i++,j--)
+    {
+        int temp = pimpl->p[i];
+        pimpl->p[i] = pimpl->p[j];
+        pimpl->p[j] = temp;
+    }
+}
 
