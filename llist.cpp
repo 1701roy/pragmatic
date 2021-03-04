@@ -41,13 +41,16 @@ class LinkedList
     Node* search(const int val);
     Node* Rsearch(Node *p, const int val);
     void Insert(const int pos, const int val);
+    void append(const int val);
+    void insertSorted(const int val);
+    void Delete(const int pos);
+    bool isSorted();
+    void deleteDuplicates();
 };
 
 LinkedList::LinkedList()
 {
-    first = new Node;
-    first->data = 0;
-    first->next = nullptr;
+    first = nullptr;
 }
 
 //Time Complexity: O(n), where n is the length of the linked list
@@ -204,14 +207,125 @@ void LinkedList::Insert(const int pos, const int val)
     }
 }
 
+//Time Complexity: Best O(1), if it is the head element
+//                 Worst O(n), to get length and move n-1 positions
+void LinkedList::append(const int val)
+{
+    Node *t = new Node;
+    t->data = val;
+    t->next = nullptr;
+
+    if(first==nullptr)
+    {
+        first = t;
+    }
+    else
+    {
+        Node *p = first;
+        int n = getLength();
+        for(int i=0;i<n-1;i++)
+        {
+            p = p->next;
+        }
+        p->next = t;
+    }
+}
+
+//Time Complexity: Best O(1), if inserting at the first node
+//                 Worst O(n), if inserting at the last node
+void LinkedList::insertSorted(const int val)
+{
+    Node *p = first;
+    Node *q = nullptr;
+
+    while(p && p->data < val)
+    {
+        q=p;
+        p=p->next;
+    }
+    Node *t = new Node;
+    t->data = val;
+    t->next = q->next;
+    q->next = t;
+}
+
+//Time Complexity: Best O(1),if deleting the first element
+//                 Worst O(n), if deleting the last element 
+void LinkedList::Delete(const int pos)
+{
+    Node *p = first;
+    Node *q = nullptr;
+
+    for(int i=0;i<pos && p;i++)
+    {
+        q=p;
+        p=p->next;
+    }
+    if(p)
+    {
+        if(pos==0)
+        {
+            first = first->next;
+            delete p;
+        }
+        else
+        {
+            q->next = p->next;
+            delete p;
+        }
+    }
+}
+
+//Time Complexity: Best O(1), if the first 2 elements are not in order
+//                 Worst O(n), if all sorted or last element is not sorted
+bool LinkedList::isSorted()
+{
+    int x = std::numeric_limits<int>::min();
+
+    Node *p = first;
+    while(p!=nullptr)
+    {
+        if(p->data < x)
+            return false;
+
+        x = p->data;
+        p = p->next;
+    }
+
+    return true;
+}
+
+//Time Complexity: O(n), where n is the lenght of the LL
+void LinkedList::deleteDuplicates()
+{
+    //Needs a sorted LL
+    Node *p = first;
+    Node *q = first->next;
+
+    while(q!=nullptr)
+    {
+        if(p->data != q->data)
+        {
+            p=q;
+            q=q->next;
+        }
+        else
+        {
+            p->next = q->next;
+            delete q;
+            q = p->next;
+        }
+    }
+}
+
 int main()
 {
     int *a;
-    int arr[10] = {1,2,3,4};
+    int arr[10] = {1,2,3,4,5,5,5,8,9,10};
     a = arr;
     LinkedList lst(a,10);
     lst.Display();
-    lst.Insert(10,15);
+    lst.deleteDuplicates();
     lst.Display();
     return 0;
 }
