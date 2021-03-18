@@ -46,6 +46,10 @@ class LinkedList
     void Delete(const int pos);
     bool isSorted();
     void deleteDuplicates();
+    void reverse();
+    void Rreverse(Node *p, Node *q);
+    void concat(Node *second);
+    Node* merge(Node *second);
 };
 
 LinkedList::LinkedList()
@@ -318,15 +322,113 @@ void LinkedList::deleteDuplicates()
     }
 }
 
+//Time Complexity: O(n), as we have to go over the entire list once
+//Space Complexity: O(1), as we don't use any extra space
+void LinkedList::reverse()
+{
+    Node *p = first;
+    Node *q = nullptr, *r = nullptr;
+
+    while(p!=nullptr)
+    {
+        r = q;
+        q = p;
+        p = p->next;
+        q->next = r;
+    }
+    
+    first = q;
+}
+
+//Time Complexity: O(n), where n is the lenght of the LL
+//Space Complexity: O(n), as n+1 activation records will be created
+void LinkedList::Rreverse(Node *p, Node *q)
+{
+    if(p!=nullptr)
+    {
+        Rreverse(p->next,p);
+        p->next = q;
+    }
+    else
+        first = q;
+}
+
+//Time Complexity: O(n), where n is the lenght of the list
+//Space Complexity: O(1), as no extra space is needed
+void LinkedList::concat(Node *second)
+{
+    Node *p = first;
+    while(p->next!=nullptr)
+    {
+        p = p->next;
+    }
+    p->next = second;
+}
+
+//Time Complexity: Theta(n+m)
+//Space Complexity: O(1)
+Node* LinkedList::merge(Node *second)
+{
+    Node *p = first;
+    Node *third = nullptr, *last = nullptr;
+    if(p->data < second->data)
+    {
+        third = last = p;
+        p = p->next;
+        last->next = nullptr;
+    }
+    else
+    {
+        third = last = second;
+        second = second->next;
+        last->next = nullptr;
+    }
+    while(p!=nullptr && second!=nullptr)
+    {
+        if(p->data < second->data)
+        {
+            last->next = p;
+            last = p;
+            p = p->next;
+            last->next = nullptr;
+        }
+        else
+        {
+            last->next = second;
+            last = second;
+            second = second->next;
+            last->next = nullptr;
+        }
+    }
+    if(p!=nullptr)
+    {
+        last->next = p;
+    }
+    else
+    {
+        last->next = second;
+    }
+    return third;
+}
+
 int main()
 {
     int *a;
-    int arr[10] = {1,2,3,4,5,5,5,8,9,10};
+    int arr[9] = {1,3,5,7,9,11,13,15,17};
     a = arr;
-    LinkedList lst(a,10);
+    LinkedList lst(a,9);
+    int arrn[5] = {2,4,8,10,18};
+    LinkedList lstn(arrn,5);
     lst.Display();
-    lst.deleteDuplicates();
-    lst.Display();
+    lstn.Display();
+    Node *res = lst.merge(lstn.first);
+    Node *p = res;
+    while(p!=nullptr)
+    {
+        std::cout<<p->data<<" ";
+        p = p->next;
+    }
+    std::cout<<std::endl;
     return 0;
 }
 
