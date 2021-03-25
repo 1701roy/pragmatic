@@ -50,6 +50,7 @@ class LinkedList
     void Rreverse(Node *p, Node *q);
     void concat(Node *second);
     Node* merge(Node *second);
+    bool isCircular();
 };
 
 LinkedList::LinkedList()
@@ -411,24 +412,30 @@ Node* LinkedList::merge(Node *second)
     return third;
 }
 
+//Time Complexity: O(xn), n si the length of the list and x would be the number of iterations performed in the circular list
+//Space Complexity: O(1)
+bool LinkedList::isCircular()
+{
+    Node *p, *q;
+    p = q = first;
+    do
+    {
+        p=p->next;
+        q=q->next;
+        q = q?q->next:NULL;
+    } while(p && q && p!=q);
+
+    return p==q?true:false;
+}
+
 int main()
 {
     int *a;
     int arr[9] = {1,3,5,7,9,11,13,15,17};
     a = arr;
     LinkedList lst(a,9);
-    int arrn[5] = {2,4,8,10,18};
-    LinkedList lstn(arrn,5);
-    lst.Display();
-    lstn.Display();
-    Node *res = lst.merge(lstn.first);
-    Node *p = res;
-    while(p!=nullptr)
-    {
-        std::cout<<p->data<<" ";
-        p = p->next;
-    }
-    std::cout<<std::endl;
+    
+    std::cout<<lst.isCircular()<<std::endl;
     return 0;
 }
 
